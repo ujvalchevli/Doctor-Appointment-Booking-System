@@ -21,7 +21,7 @@ function TopDoctors() {
           <div
             className="border border-blue-200 rounded-xl overflow-hidden cursor-pointer hover:-translate-y-2.5 transition-all duration-500"
             key={index}
-            onClick={() => navigate(`/appointment/${item._id}`)}
+            onClick={() => {navigate(`/appointment/${item._id}`); scrollTo(0,0);}}
           >
             <img className="bg-blue-50" src={item.image} alt="" />
             <div className="p-4">
