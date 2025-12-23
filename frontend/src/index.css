@@ -14,3 +14,10 @@
   /* color: #212121; */
 }
 
+@media (max-width: 740px) {
+  .active p {
+     color: black;
+     border: 1px solid #5f6fff;
+  }
+}
+
