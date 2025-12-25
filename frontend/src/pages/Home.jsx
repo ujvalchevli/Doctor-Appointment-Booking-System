@@ -5,7 +5,9 @@ import TopDoctors from "../components/TopDoctors";
 import Banner from "../components/Banner";
 import Footer from "../components/Footer";
 
+import { doctors } from "../assets/assets";
 function Home() {
+ 
   return (
     <div>
       <Header />

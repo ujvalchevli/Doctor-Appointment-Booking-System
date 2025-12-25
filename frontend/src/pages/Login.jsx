@@ -1,15 +1,60 @@
 import React, { useState } from "react";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+
 
 function Login() {
   const [state, setState] = useState("Sign Up");
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const { backedurl, token, setToken } = useContext(AppContext);
+ const navigate = useNavigate();
+
+ useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token]);
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    try {
+      if (state === "Sign Up") {
+        const { data } = await axios.post(backedurl + "/api/user/register", {
+          name,
+          email: Email,
+          password: Password,
+        });
+        if (data.success) {
+          localStorage.setItem("token", data.token);
+          setToken(data.token);
+          setState("Sign In");
+        } else {
+          toast.error(data.message);
+        }
+      } else {
+        const { data } = await axios.post(backedurl + "/api/user/login", {
+          email: Email,
+          password: Password,
+        });
+        if (data.success) {
+          setToken(data.token);
+          localStorage.setItem("token", data.token);
+        } else {
+          toast.error(data.message);
+        }
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
   return (
-    <form className="min-h-[80vh] flex items-center">
+    <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
       <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[300px] sm:min-w-96 border rounded-xl text-zinc-600 text-sm shadow-lg">
         <p className="text-2xl font-semibold">
           {state === "Sign Up" ? "Create your account" : "Login"}
@@ -51,18 +96,34 @@ function Login() {
           />
         </div>
         <button
-          onClick={onSubmitHandler}
+          type="submit"
+          // onClick={onSubmitHandler}
           className="bg-blue-600 text-white py-2 rounded-md text-base w-full"
         >
           {state === "Sign Up" ? "Create Account" : "Login"}
         </button>
         <p>
-          {
-          state === "Sign Up"
-            ? <p>Already have an account? <span onClick={()=>setState('Sign In')} className="text-blue-600 underline cursor-pointer">Login</span></p>
-            : <p>Don't have an account? <span onClick={()=>setState('Sign Up')} className="text-blue-600 underline cursor-pointer">Sign in</span></p>
-          }
-
+          {state === "Sign Up" ? (
+            <p>
+              Already have an account?{" "}
+              <span
+                onClick={() => setState("Sign In")}
+                className="text-blue-600 underline cursor-pointer"
+              >
+                Login
+              </span>
+            </p>
+          ) : (
+            <p>
+              Don't have an account?{" "}
+              <span
+                onClick={() => setState("Sign Up")}
+                className="text-blue-600 underline cursor-pointer"
+              >
+                Sign in
+              </span>
+            </p>
+          )}
         </p>
       </div>
     </form>

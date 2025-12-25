@@ -46,7 +46,7 @@ function AddDoctor() {
         console.log(`${key}: ${value}`);
       });
       const { data } = await axios.post(
-        backedurl + "/api/admin//add-doctor",
+        backedurl + "/api/admin/add-doctor",
         formData,
         { headers: { aToken } }
       );

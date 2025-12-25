@@ -36,7 +36,11 @@ function Doctors() {
         >
           Filter
         </button>
-        <div className={`flex flex-col gap-4 text-sm text-gray-600 ${showFilters?"flex":"hidden sm:flex"} `}>
+        <div
+          className={`flex flex-col gap-4 text-sm text-gray-600 ${
+            showFilters ? "flex" : "hidden sm:flex"
+          } `}
+        >
           <p
             className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer ${
               speciality === "General physician"
